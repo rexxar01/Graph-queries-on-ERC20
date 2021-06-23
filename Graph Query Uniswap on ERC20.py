@@ -59,28 +59,3 @@ result = run_query(query)
 # pretty print the results
 pprint(result)
 
-
-# For plotting liquidity vs volume
-
-import plotly.graph_objects as go
-from plotly.subplots import make_subplots
-import numpy as np
-x = np.arange(len(amount1Out))
-# Create figure with secondary y-axis
-fig = make_subplots(specs=[[{"secondary_y": True}]])
-# Add traces
-fig.add_trace(
-   go.Scatter(x=x, y=amount1Out, name="Liquidity"),secondary_y=False,
-)
-fig.add_trace(
-   go.Scatter(x=x, y=amount0Out, name="Volume"), secondary_y=True
-)
-# Add figure title
-fig.update_layout(title_text="Uniswap Liquidity vs Volume")
-# Set x-axis title
-fig.update_xaxes(title_text="Blocks")
-# Set y-axes title
-fig.update_yaxes(title_text="Liquidity", secondary_y=False)
-fig.update_yaxes(title_text="Volume", secondary_y=True)
-fig.show()
-

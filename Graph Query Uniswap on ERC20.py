@@ -59,3 +59,35 @@ result = run_query(query)
 # pretty print the results
 pprint(result)
 
+from requests import request
+import json
+from pandas.io.json import json_normalize
+
+df = json_normalize(result['data'])
+lod = result['data']['swaps']
+
+import pandas as pd
+df = pd.DataFrame.from_dict(lod)
+
+import plotly.graph_objects as go
+from plotly.subplots import make_subplots
+import numpy as np
+
+x=0
+# Create figure with secondary y-axis
+fig = make_subplots(specs=[[{"secondary_y": True}]])
+# Add traces
+fig.add_trace(
+   go.Scatter(x=x, y=amount1Out, name="Liquidity"),secondary_y=False,
+)
+fig.add_trace(
+   go.Scatter(x=x, y=amount0Out, name="Volume"), secondary_y=True
+)
+# Add figure title
+fig.update_layout(title_text="Uniswap Liquidity vs Volume")
+# Set x-axis title
+fig.update_xaxes(title_text="Blocks")
+# Set y-axes title
+fig.update_yaxes(title_text="Liquidity", secondary_y=False)
+fig.update_yaxes(title_text="Volume", secondary_y=True)
+fig.show()
